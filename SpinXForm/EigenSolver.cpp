@@ -17,7 +17,7 @@ void EigenSolver :: solve( QuaternionMatrix& A,
    vector<Quaternion> b( x.size(), 1. );
 
    // perform a fixed number of inverse power iterations
-   const int nIter = 3;
+   const int nIter = 1;
    for( int i = 0; i < nIter; i++ )
    {
       normalize( b );
