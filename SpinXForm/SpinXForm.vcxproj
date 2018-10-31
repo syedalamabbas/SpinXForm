@@ -168,6 +168,7 @@
   <ItemGroup>
     <ClCompile Include="EigenSolver.cpp" />
     <ClCompile Include="Image.cpp" />
+    <ClCompile Include="LibiglSpinXForm.cpp" />
     <ClCompile Include="LinearSolver.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="Quaternion.cpp" />

@@ -40,8 +40,13 @@ double Image :: sample( double x, double y ) const
    clamp( x0, y0 );
    clamp( x1, y1 );
 
-   return by * ( bx * I(x0,y0) + ax * I(x1,y0) ) +
-          ay * ( bx * I(x0,y1) + ax * I(x1,y1) ) ;
+   double val1 = I(x0, y0);
+   double val2 = I(x0, y1);
+   double val3 = I(x1, y0);
+   double val4 = I(x1, y1);
+
+   return by * ( bx * val1 + ax * val3) +
+          ay * ( bx * val2 + ax * val4) ;
 }
 
 int Image :: width( void ) const

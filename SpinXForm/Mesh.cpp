@@ -60,7 +60,8 @@ void Mesh :: setCurvatureChange( const Image& image, const double scale )
       for( int j = 0; j < 3; j++ )
       {
          Vector uv = faces[i].uv[j];
-         rho[i] += image.sample( uv.x*w, uv.y*h ) / 3.;
+		 double bilinearInterpVal = image.sample(uv.x*w, uv.y*h);
+         rho[i] += bilinearInterpVal / 3.;
       }
 
       // map value to range [-scale,scale]
