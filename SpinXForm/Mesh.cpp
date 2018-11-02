@@ -107,6 +107,7 @@ void Mesh :: buildEigenvalueProblem( void )
       {
          e[i] = vertices[ I[ (i+2) % 3 ]] -
                 vertices[ I[ (i+1) % 3 ]] ;
+		 //std::cout << " Vertex " << (i + 2) % 3 << "_" << (i + 1) % 3 << std::endl;
       }
 
       // increment matrix entry for each ordered pair of vertices
@@ -114,6 +115,9 @@ void Mesh :: buildEigenvalueProblem( void )
       for( int j = 0; j < 3; j++ )
       {
          E(I[i],I[j]) += a*e[i]*e[j] + b*(e[j]-e[i]) + c;
+		 std::cout << "Product of quaternions : " << e[i] * e[j] << std::endl;
+		 std::cout << "Index: " << I[i] << "," << I[j] << std::endl;
+		 std::cout << "E matrix (Discrete Dirac Equation - deformation): " << E(I[i], I[j]) << std::endl;
       }
    }
 }

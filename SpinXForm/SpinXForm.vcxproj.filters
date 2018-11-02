@@ -51,6 +51,9 @@
     <ClInclude Include="pcg\util.h">
       <Filter>Header Files\pcg</Filter>
     </ClInclude>
+    <ClInclude Include="LibiglSpinXForm.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SpinXForm.cpp">

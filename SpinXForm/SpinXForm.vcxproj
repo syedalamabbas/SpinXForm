@@ -155,6 +155,7 @@
   <ItemGroup>
     <ClInclude Include="EigenSolver.h" />
     <ClInclude Include="Image.h" />
+    <ClInclude Include="LibiglSpinXForm.h" />
     <ClInclude Include="LinearSolver.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="pcg\pcg_solver.h" />
