@@ -203,6 +203,8 @@ Quaternion Quaternion::operator*( const Quaternion& q ) const
    const Vector& v1( v );
    const Vector& v2( q.v );
 
+   /*std::cout << "Result of dot : " << v1 * v2 << std::endl;
+   std::cout << "Result of cross : " << (v1 ^ v2) << std::endl;*/
    return Quaternion( s1*s2 - v1*v2, s1*v2 + s2*v1 + (v1^v2) );
 }
 

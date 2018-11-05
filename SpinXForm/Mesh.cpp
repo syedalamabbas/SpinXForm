@@ -20,7 +20,7 @@ void Mesh :: updateDeformation( void )
    // solve eigenvalue problem for local similarity transformation lambda
    buildEigenvalueProblem();
    EigenSolver::solve( E, lambda );
-
+   
    // solve Poisson problem for new vertex positions
    buildPoissonProblem();
    LinearSolver::solve( L, newVertices, omega );
@@ -60,12 +60,16 @@ void Mesh :: setCurvatureChange( const Image& image, const double scale )
       for( int j = 0; j < 3; j++ )
       {
          Vector uv = faces[i].uv[j];
+		 /*std::cout << "Face" << i << ":" << faces[i].vertex[0] << "," << faces[i].vertex[1] << "," << faces[i].vertex[2] << std::endl;
+		 std::cout << "uv(i " << i << ","  << j <<") =" << uv << std::endl;*/
+
 		 double bilinearInterpVal = image.sample(uv.x*w, uv.y*h);
          rho[i] += bilinearInterpVal / 3.;
       }
 
       // map value to range [-scale,scale]
       rho[i] = (2.*(rho[i]-.5)) * scale;
+	  //std::cout << "Rho( " << i << ") =" << rho[i] << std::endl;
    }
 }
 
@@ -82,13 +86,13 @@ double Mesh :: area( int i )
 void Mesh :: buildEigenvalueProblem( void )
 {
    // allocate a sparse |V|x|V| matrix
-   int nV = vertices.size();
+   int nV = (int) vertices.size();
    E.resize( nV, nV );
 
    // visit each face
    for( size_t k = 0; k < faces.size(); k++ )
    {
-      double A = area(k);
+      double A = area((int)k);
       double a = -1. / (4.*A);
       double b = rho[k] / 6.;
       double c = A*rho[k]*rho[k] / 9.;
@@ -105,19 +109,26 @@ void Mesh :: buildEigenvalueProblem( void )
       Quaternion e[3];
       for( int i = 0; i < 3; i++ )
       {
+		  /*std::cout << "Vertex first" << vertices[I[(i + 2) % 3]] << std::endl;
+		  std::cout << "Vertex next" << vertices[I[(i + 1) % 3]] << std::endl;*/
          e[i] = vertices[ I[ (i+2) % 3 ]] -
                 vertices[ I[ (i+1) % 3 ]] ;
-		 //std::cout << " Vertex " << (i + 2) % 3 << "_" << (i + 1) % 3 << std::endl;
+		 /*std::cout << "Computed Edge:" << e[i] << std::endl;*/
       }
 
       // increment matrix entry for each ordered pair of vertices
       for( int i = 0; i < 3; i++ )
       for( int j = 0; j < 3; j++ )
       {
+		 /*std::cout << "Before :" << E(I[i], I[j]) << std::endl;
+		 std::cout << "First term :" << a * e[i] * e[j] << std::endl;
+		 std::cout << "Second term :" << b * (e[j] - e[i]) << std::endl;
+		 std::cout << "Third term :" << c << std::endl;
+		 std::cout << " first and second and third" << a * e[i] * e[j] + b * (e[j] - e[i]) + c << std::endl;*/
          E(I[i],I[j]) += a*e[i]*e[j] + b*(e[j]-e[i]) + c;
-		 std::cout << "Product of quaternions : " << e[i] * e[j] << std::endl;
-		 std::cout << "Index: " << I[i] << "," << I[j] << std::endl;
-		 std::cout << "E matrix (Discrete Dirac Equation - deformation): " << E(I[i], I[j]) << std::endl;
+		 /*std::cout << "Product of quaternions : " << e[i] * e[j] << std::endl;*/
+		 //std::cout << "Index: " << I[i] << "," << I[j] << std::endl;
+		 //std::cout << "E matrix (Discrete Dirac Equation - deformation): " << E(I[i], I[j]) << std::endl;
       }
    }
 }
@@ -132,7 +143,7 @@ void Mesh :: buildLaplacian( void )
 // builds the cotan-Laplace operator
 {
    // allocate a sparse |V|x|V| matrix
-   int nV = vertices.size();
+   int nV = (int)vertices.size();
    L.resize( nV, nV );
 
    // visit each face
@@ -163,6 +174,11 @@ void Mesh :: buildLaplacian( void )
          L( k2, k1 ) -= cotAlpha / 2.;
          L( k1, k1 ) += cotAlpha / 2.;
          L( k2, k2 ) += cotAlpha / 2.;
+
+		 /*std::cout << "1st Term = " << L(k1, k2) << std::endl;
+		 std::cout << "2nd Term = " << L(k1, k2) << std::endl;
+		 std::cout << "3rd Term = " << L(k1, k2) << std::endl;
+		 std::cout << "4th Term = " << L(k1, k2) << std::endl;*/
       }
    }
 }

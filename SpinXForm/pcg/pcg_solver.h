@@ -21,6 +21,8 @@
 
 #include <cmath>
 #include "sparse_matrix.h"
+#include <iostream>
+#include <fstream>
 
 //============================================================================
 // Some basic linear algebra subroutines.
@@ -324,6 +326,14 @@ struct PCGSolver
 
    bool solve(const SparseMatrix<T> &matrix, const std::vector<T> &rhs, std::vector<T> &result, T &residual_out, int &iterations_out) 
    {
+
+	   //// For debugging purposes
+	   //std::ofstream myfile;
+	   //myfile.open("SpinXForm.txt");
+	   //std::string someStrName = "E_matrix";
+	   //matrix.write_matlab(myfile, someStrName.c_str());
+	   //myfile.close();
+
       unsigned int n=matrix.n;
       if(m.size()!=n){ m.resize(n); s.resize(n); z.resize(n); r.resize(n); }
       zero(result);
